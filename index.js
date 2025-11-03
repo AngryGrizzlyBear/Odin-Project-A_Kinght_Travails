@@ -25,6 +25,38 @@ function getValidMoves(position) {
             validMoves.push([newX, newY]);
         }
     }
-
     return validMoves;
+}
+
+function knightMoves(start, end) {
+    if (start[0] === end[0] && start[1] === end[1]) {
+        return [start];
+    }
+
+    const queue = [[start]];
+
+    const visited = new Set();
+    visited.add(start.toString());
+
+    while (queue.length > 0) {
+        const path = queue.shift();
+
+        const currentPosition = path[path.length - 1]
+
+        const validMoves = getValidMoves(currentPosition);
+
+        for (const nextPosition of validMoves) {
+            if (nextPosition[0] === end[0] && nextPosition[1] === end[1]) {
+                return [...path, nextPosition];
+            }
+            const positionKey = nextPosition.toString();
+            if (!visited.has(positionKey)) {
+                visited.add(positionKey);
+
+                queue.push([...path, nextPosition]);
+            }
+        }
+
+    }
+    return null;
 }
